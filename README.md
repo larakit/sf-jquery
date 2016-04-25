@@ -1,29 +1,29 @@
-# README #
+# Установка пакета 
+~~~bash
+composer require larakit/sf-jquery
+~~~
+Ничего дополнительно инициализировать не надо, добавив этот пакет в зависимости в composer.json, он сам установится и пропишется на всех страницах автоматически.
 
-This README would normally document whatever steps are necessary to get your application up and running.
+# Отключение пакета на некоторых роутах
+В файле  ./app/Http/staticfiles.php добавьте
+~~~php
+\Larakit\StaticFiles\Manager::package('larakit/sf-jquery')
+    ->addExclude('home')
+    ->addExclude('admin.*');
+~~~    
+тогда пакет не будет включен на главной странице и на всех страницах админки.
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+# Изменение состава подключаемой статики пакета
+Если вы использовали какой-то пакет, который за собой потянул этот пакет, но вас не устраивает версия библиотеки, подключаемая по умолчанию (например не хотите использовать CDN, а хотите отдавать со своего сайта), то вместо базового способа инициализации пакета
+~~~php
+\Larakit\StaticFiles\Manager::package('larakit/sf-jquery')
+  ->js('//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js');
+  ~~~
+  вы можете переопределить его, вызвав инициализацию пакета еще раз
+  ~~~php
+\Larakit\StaticFiles\Manager::package('larakit/sf-jquery')
+  //очистить список подключенных JS
+  ->clearJs()
+  //добавить свой
+  ->js('/jquery.js');
+  ~~~
